@@ -21,6 +21,7 @@ function connect($dbName = null){
             }
         }
         else{
+            mysqli_close($conn);
             exit('Connection failed! ' . mysqli_connect_errno());
             echo "<br>";
         }
@@ -32,6 +33,7 @@ function connect($dbName = null){
         }
         else{
             exit('Connection failed! ' . mysqli_connect_errno());
+            mysqli_close($conn);
             echo "<br>";
         }
     };
@@ -40,8 +42,8 @@ function connect($dbName = null){
 
 //createTable function is creating 'users' table in 'commentProject' database by default,if no parameter is given.
 //1 parameter is database name,second parameter is table name.
-function createUsersTable($dbName = "commentProject",$tableName = "users"){
-    $conn =connect($dbName);
+function createUsersTable($dbName = "commentProject2",$tableName = "users"){
+    $conn = connect($dbName);
 
     if ($conn){
         $sql = "CREATE TABLE if not exists $tableName (
@@ -74,8 +76,8 @@ function createUsersTable($dbName = "commentProject",$tableName = "users"){
 
 }
 
-function createCommentsTable($dbName = "commentProject",$tableName = "comments"){
-    $conn =connect($dbName);
+function createCommentsTable($dbName = "commentProject2",$tableName = "comments"){
+    $conn = connect($dbName);
 
     if ($conn){
         $sql = "CREATE TABLE if not exists $tableName (
