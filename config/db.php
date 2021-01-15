@@ -4,7 +4,6 @@ const HOST = "localhost";
 const USERNAME = "root";
 const PASSWORD = "";
 
-
 //connect function is connecting to mysql server only if no parameter is given,otherwise function is creating that database then connecting to it.
 function connect($dbName = null){
     $conn = mysqli_connect(HOST,USERNAME,PASSWORD);
@@ -42,7 +41,7 @@ function connect($dbName = null){
 
 //createTable function is creating 'users' table in 'commentProject' database by default,if no parameter is given.
 //1 parameter is database name,second parameter is table name.
-function createUsersTable($dbName = "commentProject2",$tableName = "users"){
+function createUsersTable($dbName = "commentProject",$tableName = "users"){
     $conn = connect($dbName);
 
     if ($conn){
@@ -76,7 +75,7 @@ function createUsersTable($dbName = "commentProject2",$tableName = "users"){
 
 }
 
-function createCommentsTable($dbName = "commentProject2",$tableName = "comments"){
+function createCommentsTable($dbName = "commentProject",$tableName = "comments"){
     $conn = connect($dbName);
 
     if ($conn){

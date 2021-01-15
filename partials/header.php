@@ -6,3 +6,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 <link rel="stylesheet" href="./assets/main.css">
+
+<nav class="navbar navbar-expand navbar-light bg-light mb-2">
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item ">
+                <a class="nav-link" href="./index.php">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./registerPage.php"/register>Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./signinPage.php">Sign in</a>
+            </li>
+        </ul>
+    </div>
+</nav>
