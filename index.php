@@ -1,5 +1,4 @@
 <?php
-session_start();
 include "partials/header.php";
 include "config/db.php";
 
@@ -32,7 +31,7 @@ if (!isset($_SESSION['connectedToDb'])){
             <input type="file" name="file" accept="image/x-png, image/gif, image/jpeg" class="form-control-file"">
         </div>
         <div class="text-center">
-            <button disabled type="submit" name="submit" class="btn btn-primary btn-lg">Send</button>
+            <button <?php echo isset($_SESSION['user']) ? "" : "disabled" ; ?> type="submit" name="submit" class="btn btn-primary btn-lg">Send</button>
         </div>
     </form>
 </div>

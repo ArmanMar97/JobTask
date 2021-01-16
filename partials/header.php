@@ -1,5 +1,8 @@
 <?php
+session_start();
 ?>
+
+
 
 <title>Comment Page</title>
 <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -16,9 +19,17 @@
             <li class="nav-item">
                 <a class="nav-link" href="./registerPage.php"/register>Register</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="./signinPage.php">Sign in</a>
-            </li>
+                <?php
+                if (isset($_SESSION['user'])){
+                    echo "<li class='nav-item'>";
+                    echo "<a class='nav-link' href='./logout.php'>Log out</a>";
+                    echo "</li>";
+                }else{
+                    echo "<li class='nav-item'>";
+                    echo "<a class='nav-link' href='./signinPage.php'>Sign in</a>";
+                    echo "</li>";
+                }
+                ?>
         </ul>
     </div>
 </nav>

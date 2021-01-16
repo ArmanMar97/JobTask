@@ -1,20 +1,17 @@
 <?php
-session_start();
-
-
 include 'partials/header.php';
-include 'config/db.php';
+include "config/db.php";
 $errors = [];
+$success = [];
 
 //Validate user data
 if (isset($_POST['submit'])){
-    $conn = connect('commentProject');
-    $name = htmlspecialchars(trim(mysqli_real_escape_string($conn,$_POST['name'])));
-    $surname = htmlspecialchars(trim(mysqli_real_escape_string($conn,$_POST['surname'])));
-    $email = htmlspecialchars(trim(mysqli_real_escape_string($conn,$_POST['email'])));
-    $phone = htmlspecialchars(trim(mysqli_real_escape_string($conn,$_POST['phone'])));
-    $password1 = htmlspecialchars(trim(mysqli_real_escape_string($conn,$_POST['password1'])));
-    $password2 = htmlspecialchars(trim(mysqli_real_escape_string($conn,$_POST['password2'])));
+    $name = htmlspecialchars(trim($_POST['name']));
+    $surname = htmlspecialchars(trim($_POST['surname']));
+    $email = htmlspecialchars(trim($_POST['email']));
+    $phone = htmlspecialchars(trim($_POST['phone']));
+    $password1 = htmlspecialchars(trim($_POST['password1']));
+    $password2 = htmlspecialchars(trim($_POST['password2']));
     if (empty($name)){
         array_push($errors,"Name is required!");
     }elseif (strlen($name)>15 || strlen($name)<5){
@@ -42,23 +39,31 @@ if (isset($_POST['submit'])){
     if ($password1!==$password2){
         array_push($errors,"Passwords don't match!");
     }
-    $hashedPassword = password_hash($password1,PASSWORD_DEFAULT);
     if (count($errors)==0){
         $conn = connect('commentProject');
-        $query = "insert into users(name, surname, email, phone,password) values('$name','$surname','$email','$phone','$hashedPassword')";
+        $nameEscaped = mysqli_real_escape_string($conn,$name);
+        $surnameEscaped = mysqli_real_escape_string($conn,$surname);
+        $emailEscaped = mysqli_real_escape_string($conn,$email);
+        $passwordEscaped = mysqli_real_escape_string($conn,$password1);
+        $hashedPassword = password_hash($passwordEscaped,PASSWORD_DEFAULT);
+        $phoneEscaped = mysqli_real_escape_string($conn,$phone);
+        $query = "insert into users(name, surname, email, phone,password) values('$nameEscaped','$surnameEscaped','$emailEscaped','$phoneEscaped','$hashedPassword')";
         $answer = mysqli_query($conn,$query);
         if ($answer){
             echo "true";
+            array_push($success,'You are successfully registered!');
+            unset($_POST);
         }else{
             if (mysqli_errno($conn)=='1062'){
-                array_push($errors,'Email already in use!');
+                array_push($errors,'User with this credentials is already in use!');
             }
-           echo mysqli_errno($conn);
+            echo mysqli_errno($conn);
         }
         mysqli_close($conn);
     }
 }
 //Validation end!
+
 
 ?>
 
@@ -66,15 +71,24 @@ if (isset($_POST['submit'])){
 <div class="container">
     <h3 class="text-center">Register</h3>
     <?php
-    if (!count($errors)>0){
-        echo "";
-    }else{
-        echo "<div class='alert alert-dark'>";
-        foreach ($errors as $error){
-            echo $error;
-            echo "<br>";
+    if (isset($errors)){
+        if (!count($errors)>0){
+            echo "";
+        }else{
+            echo "<div class='alert alert-dark'>";
+            foreach ($errors as $error){
+                echo $error;
+                echo "<br>";
+            }
+            echo "</div>";
         }
-        echo "</div>";
+    }
+    if (isset($success)){
+        if (count($success)>0){
+            echo  "<div class='alert alert-success'>";
+            echo $success[0];
+            echo "</div>";
+        }
     }
     ?>
     <form class="mt-3" action="" method="post">

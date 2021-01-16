@@ -12,7 +12,9 @@ function connect($dbName = null){
             $sql = "CREATE DATABASE IF NOT EXISTS $dbName";
             $answer = mysqli_query($conn,$sql);
             if ($answer){
-                echo "New database was created and connected successfully!";
+                if (!isset($_SESSION['connectedToDb'])){
+                    echo "New database was created and connected successfully!";
+                }
                 $conn = @mysqli_connect(HOST,USERNAME,PASSWORD,$dbName);
             }
             else{
