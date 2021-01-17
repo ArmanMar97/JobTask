@@ -109,3 +109,25 @@ function createCommentsTable($dbName = "commentProject",$tableName = "comments")
 
 }
 
+
+function createAdmin(){
+    $conn = connect('commentProject');
+    if ($conn){
+        $password = '536066';
+        $hashedPasword = password_hash($password,PASSWORD_DEFAULT);
+        $query = "insert into users(name,email, phone,password,role) values('admin','admin','099216143','$hashedPasword','admin')";
+        $answer = mysqli_query($conn,$query);
+        if ($answer){
+            echo "Admin created!";
+            echo "<br>";
+        }
+        else{
+            "Connection failed! " . mysqli_connect_errno();
+        }
+    }else{
+        exit('Connection failed! ' . mysqli_connect_errno());
+        echo "<br>";
+        mysqli_close($conn);
+        exit();
+    }
+}

@@ -28,10 +28,18 @@ if (isset($_POST['submit'])){
             $userData = mysqli_fetch_assoc($answer);
             $pass = $userData['password'];
             if (password_verify($passwordEscaped,$pass)){
-                array_push($success,'You are successfully logged in!');
-                $_SESSION['user'] = $userData;
-                unset($_POST);
-                header('Location:/JobTask/index.php');
+                if ($userData['role']=='admin'){
+                    $_SESSION['user'] = $userData;
+                    $_SESSION['isAdmin'] = true;
+                    unset($_POST);
+                    header('Location:/JobTask/index.php');
+                    array_push($success,'Welcome admin!');
+                }else{
+                    array_push($success,'You are successfully logged in!');
+                    unset($_POST);
+                    $_SESSION['user'] = $userData;
+                    header('Location:/JobTask/index.php');
+                }
             }else{
                 array_push($errors,'Wrong credentials!');
                 unset($_POST);
