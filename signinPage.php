@@ -26,15 +26,23 @@ if (isset($_POST['submit'])){
         $answer = mysqli_query($conn,$query);
         if (mysqli_num_rows($answer) == 1){
             $userData = mysqli_fetch_assoc($answer);
+            if ($userData['isblocked']=='1'){
+                array_push($errors,"You are blocked!");
+                exit("You are blocked!");
+            }
             $pass = $userData['password'];
             if (password_verify($passwordEscaped,$pass)){
                 if ($userData['role']=='admin'){
                     $_SESSION['user'] = $userData;
                     $_SESSION['isAdmin'] = true;
                     unset($_POST);
-                    header('Location:/JobTask/index.php');
-                    array_push($success,'Welcome admin!');
-                }else{
+                    header('Location:/JobTask/adminPage.php');
+                }else if ($userData['role']=='moderator'){
+                    $_SESSION['user'] = $userData;
+                    $_SESSION['isModerator'] = true;
+                    unset($_POST);
+                    header('Location:/JobTask/moderatorPage.php');
+                } else{
                     array_push($success,'You are successfully logged in!');
                     unset($_POST);
                     $_SESSION['user'] = $userData;
@@ -88,7 +96,7 @@ if (isset($_POST['submit'])){
             <input type="text" class="form-control" name="email" value="<?php echo empty($_POST['email']) ? "" : $_POST['email']; ?>" placeholder="Email" aria-describedby="basic-addon1">
         </div>
         <div class="input-group mx-auto mb-2 w-50">
-            <input type="text" class="form-control" name="password" value="" placeholder="Password" aria-describedby="basic-addon1">
+            <input type="password" class="form-control" name="password" value="" placeholder="Password" aria-describedby="basic-addon1">
         </div>
         <div class="text-center mt-4">
             <button type="submit" name="submit" class="btn btn-primary btn-lg">Sign in</button>

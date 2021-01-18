@@ -1,3 +1,8 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 body{
     font-family: 'Nanum Gothic', sans-serif;
 }
@@ -48,36 +53,41 @@ a{
     font-size: 75%
 }
 
-.round img {
-    border-radius: 100%
-}
 
-.label-info {
-    background-color: #1976d2
-}
 
-.label-success {
-    background-color: green
+.box{
+    border: 1px solid black;
+    width: 100px;
+    min-height: 40px;
 }
-
-.label-danger {
-    background-color: #ef5350
+.grid{
+    display: grid;
+    grid-template-columns: repeat(8,12.50%);
 }
-
-.action-icons a {
-    padding-left: 7px;
-    vertical-align: middle;
-    color: #99abb4
+.grid-2{
+    display: grid;
+    grid-template-columns: repeat(4,25%);
 }
-
-.action-icons a:hover {
-    color: #1976d2
+.grid-box{
+    border: 1px solid black;
 }
-
-.mt-100 {
-    margin-top: 100px
+.details{
+    cursor: pointer;
 }
-
-.mb-100 {
-    margin-bottom: 100px
+.message{
+    max-height: 50px;
+    overflow-y: hidden;
+}
+a{
+    color: black;
+}
+.fas{
+    color: black;
+}
+.fa-trash-alt{
+    transition: linear 200ms;
+}
+.fa-trash-alt:hover{
+    transform: scale(1.4);
+    transition: linear 200ms;
 }

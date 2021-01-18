@@ -1,6 +1,5 @@
 <?php
 include "partials/header.php";
-include "config/db.php";
 include "functions.php";
 loadComments();
 $errors = [];
@@ -28,46 +27,47 @@ if (!isset($_SESSION['connectedToDb'])){
     createCommentsTable();
     $_SESSION['connectedToDb'] = true;
 }
-//    createAdmin();
 
 if (isset($_POST['submit'])){
-    $commentCategory = htmlspecialchars(trim($_POST['category']));
-    $commentTitle = htmlspecialchars(trim($_POST['title']));
-    $commentContent = htmlspecialchars(trim($_POST['comment']));
+    if (isset($_SESSION['user'])){
+        $commentCategory = htmlspecialchars(trim($_POST['category']));
+        $commentTitle = htmlspecialchars(trim($_POST['title']));
+        $commentContent = htmlspecialchars(trim($_POST['comment']));
 
-    if ($commentCategory == "Select Category"){
-        array_push($errors,"Please choose category!");
-    }
-    if (empty($commentTitle)){
-        array_push($errors,"Comment title field is required!");
-    }elseif (strlen($commentTitle)>56){
-        array_push($errors,"Comment title is too long!");
-    }
-    if (empty($commentContent)){
-        array_push($errors,"Comment field is required!");
-    }
-    else if (strlen($commentContent)<25 || strlen($commentContent>256)){
-        array_push($errors,"Comment should be between 25 to 256 symbols!");
-    }
-    if(count($errors)==0){
-        $conn = connect('commentProject');
-        $commentCategory = mysqli_real_escape_string($conn,$commentCategory);
-        $commentTitle = mysqli_real_escape_string($conn,$commentTitle);
-        $commentContent = mysqli_real_escape_string($conn,$commentContent);
-        $query = "insert into comments(category, title, content, authorEmail,authorId,authorName) values('$commentCategory','$commentTitle','$commentContent','$commentAuthorEmail','$commentAuthorId','$commentAuthorName')";
-        $answer = mysqli_query($conn,$query);
-        if ($answer){
-            echo "true";
-            array_push($success,'Your comment has been sent!');
-            unset($_POST);
-            header('Location:/JobTask/index.php');
-        }else{
-            if (mysqli_errno($conn)=='1062'){
-                array_push($errors,'User with this credentials is already in use!');
-            }
-            echo mysqli_errno($conn);
+        if ($commentCategory == "Select Category"){
+            array_push($errors,"Please choose category!");
         }
-        mysqli_close($conn);
+        if (empty($commentTitle)){
+            array_push($errors,"Comment title field is required!");
+        }elseif (strlen($commentTitle)>56){
+            array_push($errors,"Comment title is too long!");
+        }
+        if (empty($commentContent)){
+            array_push($errors,"Comment field is required!");
+        }
+        else if (strlen($commentContent)<25 || strlen($commentContent>256)){
+            array_push($errors,"Comment should be between 25 to 256 symbols!");
+        }
+        if(count($errors)==0){
+            $conn = connect('commentProject');
+            $commentCategory = mysqli_real_escape_string($conn,$commentCategory);
+            $commentTitle = mysqli_real_escape_string($conn,$commentTitle);
+            $commentContent = mysqli_real_escape_string($conn,$commentContent);
+            $query = "insert into comments(category, title, content, authorEmail,authorId,authorName) values('$commentCategory','$commentTitle','$commentContent','$commentAuthorEmail','$commentAuthorId','$commentAuthorName')";
+            $answer = mysqli_query($conn,$query);
+            if ($answer){
+                echo "true";
+                array_push($success,'Your comment has been sent!');
+                unset($_POST);
+                header('Location:/JobTask/index.php');
+            }else{
+                if (mysqli_errno($conn)=='1062'){
+                    array_push($errors,'User with this credentials is already in use!');
+                }
+                echo mysqli_errno($conn);
+            }
+            mysqli_close($conn);
+        }
     }
 }
 
@@ -122,6 +122,11 @@ if (isset($_POST['submit'])){
                     }
                     ?>
                 </div>
+                <?php
+                if (!count($comments)){
+                    echo "<h3 class='my- text-center'>No comments!</h3>";
+                }
+                ?>
             </div>
 
         </div>
